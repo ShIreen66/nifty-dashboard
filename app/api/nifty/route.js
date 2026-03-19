@@ -4,27 +4,30 @@ let lastData = null;
 
 export async function GET() {
   try {
-    const now = new Date();
+    // ✅ Convert to IST
+    const now = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Kolkata",
+    });
 
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
+    const date = new Date(now);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
 
     // Market time: 9:15 AM to 3:30 PM IST
     const isMarketOpen =
       (hours > 9 || (hours === 9 && minutes >= 15)) &&
       (hours < 15 || (hours === 15 && minutes <= 30));
 
-    // ✅ If market is open → fetch fresh data
     if (isMarketOpen) {
       const data = await fetchNiftyData();
-      lastData = data; // store latest
+      lastData = data;
+
       return Response.json({
         ...data,
         marketStatus: "OPEN",
       });
     }
 
-    // ✅ If market closed → return last stored data
     if (lastData) {
       return Response.json({
         ...lastData,
@@ -32,7 +35,6 @@ export async function GET() {
       });
     }
 
-    // fallback (first load case)
     const data = await fetchNiftyData();
     lastData = data;
 
