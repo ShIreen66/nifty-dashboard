@@ -5,6 +5,9 @@ export default function NiftyCard({ data }) {
   return (
     <div className="bg-gray-900 p-6 rounded-xl mb-6">
       <h2 className="text-xl">NIFTY 50</h2>
+      <p className="text-sm text-gray-400">
+        Market status: {data.marketStatus || "UNKNOWN"}
+      </p>
       <p className="text-4xl font-bold">{data.price.toFixed(2)}</p>
 
       <p className={change >= 0 ? "text-green-400" : "text-red-400"}>

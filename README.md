@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nifty Dashboard
 
-## Getting Started
+This is a small dashboard project built with `Next.js` named `nifty-dashboard`. It is designed to display NIFTY stock market data and metrics in a compact UI.
 
-First, run the development server:
+## 📁 Project Structure
+
+- `app/`
+  - `page.js` — Main UI page
+  - `api/nifty/route.js` — Server-side API route
+- `components/`
+  - `NiftyCard.js` — Data card component
+  - `NiftyChart.js` — Chart component
+- `lib/`
+  - `fetchNifty.js` — Data fetching logic
+- `app/globals.css` — Global styles
+
+## ⚙️ Setup
+
+1. Clone the repository:
+
+```bash
+git clone <repo-url>
+cd nifty-dashboard
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open in browser:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔍 Features
 
-## Learn More
+- Fetches NIFTY data from API route (`app/api/nifty/route.js`)
+- Renders information using `NiftyCard` and `NiftyChart`
+- Designed for near real-time data updates where available
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Key Code Points
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `lib/fetchNifty.js`:
+  - HTTP requests and data normalization
+- `components/NiftyCard.js`:
+  - Card layouts and core metric display
+- `components/NiftyChart.js`:
+  - Chart rendering logic for trend visualization
+- `app/api/nifty/route.js`:
+  - API endpoint serving JSON data to the frontend
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ✅ Customization
 
-## Deploy on Vercel
+- Update the fetch URL in `app/api/nifty/route.js` to point to your own data source
+- Modify `app/globals.css` for styling changes
+- Add new metrics in `NiftyCard` and `NiftyChart` as needed
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The easiest deployment path is Vercel:
+
+```bash
+npx vercel
+```
+
+or use GitHub Pages / Netlify as an alternative.
+
+## 🧩 Helpful Commands
+
+- `npm run lint` (if configured)
+- `npm run build` to create production build
+
+---
+
+## Contributing
+
+- Create a Pull Request to contribute
+- Open issues for bugs and feature requests
+
+

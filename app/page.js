@@ -20,7 +20,7 @@ export default function Home() {
   useEffect(() => {
     fetchData();
 
-    const interval = setInterval(fetchData, 10000);
+    const interval = setInterval(fetchData, 6000); // 6s for nearer real-time updates
     return () => clearInterval(interval);
   }, []);
 

@@ -1,36 +1,49 @@
 import { fetchNiftyData } from "@/lib/fetchNifty";
-import axios from "axios";
+
+let lastData = null;
 
 export async function GET() {
   try {
-    const url =
-      "https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI";
+    const now = new Date();
 
-    const response = await axios.get(url);
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
 
-    const result = response.data.chart.result[0];
+    // Market time: 9:15 AM to 3:30 PM IST
+    const isMarketOpen =
+      (hours > 9 || (hours === 9 && minutes >= 15)) &&
+      (hours < 15 || (hours === 15 && minutes <= 30));
 
-    const meta = result.meta;
-    const timestamps = result.timestamp;
-    const prices = result.indicators.quote[0].close;
+    // ✅ If market is open → fetch fresh data
+    if (isMarketOpen) {
+      const data = await fetchNiftyData();
+      lastData = data; // store latest
+      return Response.json({
+        ...data,
+        marketStatus: "OPEN",
+      });
+    }
+
+    // ✅ If market closed → return last stored data
+    if (lastData) {
+      return Response.json({
+        ...lastData,
+        marketStatus: "CLOSED",
+      });
+    }
+
+    // fallback (first load case)
+    const data = await fetchNiftyData();
+    lastData = data;
 
     return Response.json({
-      price: meta.regularMarketPrice,
-      previousClose: meta.previousClose,
-      timestamps,
-      prices,
+      ...data,
+      marketStatus: "CLOSED",
     });
   } catch (error) {
-    return Response.json({ error: "Failed to fetch data" }, { status: 500 });
-  }
-}
-
-
-export async function GET() {
-  try {
-    const data = await fetchNiftyData();
-    return Response.json(data);
-  } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json(
+      { error: "Failed to fetch data" },
+      { status: 500 }
+    );
   }
 }
